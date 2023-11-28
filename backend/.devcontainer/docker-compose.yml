@@ -1,0 +1,37 @@
+version: '3.8'
+
+volumes:
+  spring-book-db:
+
+
+services:
+  spring-book-app:
+    container_name: spring-book-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+      POSTGRES_HOSTNAME: postgresdb
+    volumes:
+      - ../..:/workspaces/${localWorkspaceFolderBasename}:cached
+    command: sleep infinity
+    network_mode: service:spring-book-db
+    depends_on:
+      - spring-book-db
+
+  spring-book-db:
+    container_name: spring-book-db
+    image: postgres:latest
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - ../db/initdb:/docker-entrypoint-initdb.d
+      - spring-book-db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres

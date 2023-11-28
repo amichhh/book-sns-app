@@ -1,0 +1,16 @@
+services:
+  vue-book-app:
+    image: "mcr.microsoft.com/devcontainers/typescript-node:1-20-bullseye"
+    ports:
+      - 3000:3000
+    command: sleep infinity
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    volumes:
+      - ..:/workspace:cached
+      # - ~/.ssh:/home/node/.ssh
+      # - node-modules:/workspace/node_modules
+    working_dir: /workspace
+
+volumes:
+  node-modules:
